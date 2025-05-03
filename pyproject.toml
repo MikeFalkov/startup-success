@@ -5,16 +5,16 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "startup_success"
 version = "0.0.1"
-description = "Our project aims to predict whether a currenly operational startup company will succeed or fail."
+description = "This project aims to predict whether a currenly operating startup company will succeed or fail."
 authors = [
-  { name = "Data Mining" },
+    { name = "Michael Falkov" },
+    { name = "Vladimir Skirmant"}
 ]
 
 readme = "README.md"
-classifiers = [
-    "Programming Language :: Python :: 3",
 
-]
+classifiers = ["Programming Language :: Python :: 3", ]
+requires-python = "~=3.13.0"
 dependencies = [
     "gradio>=5.28.0",
     "imblearn>=0.0",
@@ -40,7 +40,6 @@ dependencies = [
     "typer",
     "xgboost>=3.0.0",
 ]
-requires-python = "~=3.13.0"
 
 
 [tool.ruff]
@@ -54,4 +53,3 @@ extend-select = ["I"]  # Add import sorting
 [tool.ruff.lint.isort]
 known-first-party = ["startup_success"]
 force-sort-within-sections = true
-
