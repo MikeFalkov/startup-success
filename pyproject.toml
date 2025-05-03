@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "startup_success"
 version = "0.0.1"
-description = "Our project is to predict whether a startup which is currently operating turn into a success or a failure."
+description = "Our project aims to predict whether a currenly operational startup company will succeed or fail."
 authors = [
   { name = "Data Mining" },
 ]
