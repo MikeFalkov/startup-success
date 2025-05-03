@@ -1,0 +1,57 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "startup_success"
+version = "0.0.1"
+description = "Our project is to predict whether a startup which is currently operating turn into a success or a failure."
+authors = [
+  { name = "Data Mining" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+
+]
+dependencies = [
+    "gradio>=5.28.0",
+    "imblearn>=0.0",
+    "ipython",
+    "ipywidgets>=8.1.6",
+    "jupyterlab",
+    "kaggle>=1.7.4.2",
+    "lightgbm>=4.6.0",
+    "loguru",
+    "matplotlib",
+    "missingno>=0.5.2",
+    "notebook",
+    "numpy",
+    "pandas",
+    "pip",
+    "python-dotenv",
+    "ruff",
+    "scikit-learn",
+    "seaborn>=0.13.2",
+    "squarify>=0.4.4",
+    "streamlit>=1.45.0",
+    "tqdm",
+    "typer",
+    "xgboost>=3.0.0",
+]
+requires-python = "~=3.13.0"
+
+
+[tool.ruff]
+line-length = 99
+src = ["startup_success"]
+include = ["pyproject.toml", "startup_success/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["startup_success"]
+force-sort-within-sections = true
+
