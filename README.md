@@ -7,6 +7,32 @@
 This project is to predict whether a startup which is currently operating turn into a success or a failure.
 
 ---
+## Authors
+
+- **Michael Falkov**
+- **Vladimir Skirmant**
+---
+
+## Model
+
+The model is a `BalancedRandomForestClassifier` trained on SMOTE+Tomek-resampled data. Threshold optimization is applied using F1-score targeting the minority (failure) class.
+
+- Features include funding history, founding timeline, and clustered category vectors.
+- Predictions return both class labels and probabilities.
+
+---
+
+## Tools Used
+- [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) – Standardized project structure
+- [Typer](https://typer.tiangolo.com/) – CLI application framework
+- [loguru](https://github.com/Delgan/loguru) – Structured logging
+- [joblib](https://joblib.readthedocs.io/) – Model serialization
+- 
+- [scikit-learn](https://scikit-learn.org/) – ML models and preprocessing
+- [imbalanced-learn](https://imbalanced-learn.org/) – SMOTE+Tomek for class imbalance
+
+
+---
 
 ## Project Organization
 
@@ -119,38 +145,7 @@ make format  # Auto-format and fix issues
 ### Cleanup
 
 ```bash
-make clean          # Remove .pyc and __pycache__
+make clean          # Remove cache
 make clean-data     # Remove interim and processed data
 make clean-models   # Remove saved models
 ```
-
----
-
-## Model
-
-The model is a `BalancedRandomForestClassifier` trained on SMOTE+Tomek-resampled data. Threshold optimization is applied using F1-score targeting the minority (failure) class.
-
-- Features include funding history, founding timeline, and clustered category vectors.
-- Predictions return both class labels and probabilities.
-
----
-
-## Tools Used
-- [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) – Standardized project structure
-- [Typer](https://typer.tiangolo.com/) – CLI application framework
-- [loguru](https://github.com/Delgan/loguru) – Structured logging
-- [joblib](https://joblib.readthedocs.io/) – Model serialization
-- 
-- [scikit-learn](https://scikit-learn.org/) – ML models and preprocessing
-- [imbalanced-learn](https://imbalanced-learn.org/) – SMOTE+Tomek for class imbalance
-
-
----
-
-## Authors
-
-- **Your Name** – *Initial work*
-- Open to contributors! Submit a PR or issue to get involved.
-
-```
-
