@@ -79,6 +79,11 @@ clean-models:
 clean-data:
 	rm -rf data/processed/* data/interim/*
 
+## Generate plots
+.PHONY: plots
+plots:
+	$(PYTHON_INTERPRETER) startup_success/plots.py
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
