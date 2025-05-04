@@ -12,7 +12,7 @@ from startup_success.config import FIGURES_DIR, PROCESSED_DATA_DIR
 
 app = typer.Typer()
 
-sns.set(style="whitegrid")
+sns.set_theme(style="whitegrid")
 
 
 def plot_founding_years(df: pd.DataFrame, output_path: Path):
