@@ -2,28 +2,29 @@
 
 from pathlib import Path
 
-import pandas as pd
-import numpy as np
-
+from imblearn.combine import SMOTETomek
+from imblearn.ensemble import BalancedRandomForestClassifier
 from loguru import logger
+import numpy as np
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import (
+    average_precision_score,
+    classification_report,
+    confusion_matrix,
+    precision_recall_curve,
+)
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 import typer
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.metrics import (
-    precision_recall_curve, classification_report,
-    confusion_matrix, average_precision_score
-)
-from imblearn.ensemble import BalancedRandomForestClassifier
-from imblearn.combine import SMOTETomek
-
-from startup_success.config import PROCESSED_DATA_DIR, MODELS_DIR
+from startup_success.config import PROCESSED_DATA_DIR
 
 app = typer.Typer()
 
 FEATURES_PATH = PROCESSED_DATA_DIR / "features.csv"
+
 
 @app.command()
 def main(features_path: Path = FEATURES_PATH):
@@ -35,15 +36,22 @@ def main(features_path: Path = FEATURES_PATH):
 
     categorical_features = ["country_code", "region"]
     numeric_features = [
-        "funding_total_usd", "funding_rounds", "founded_year",
-        "first_funding_year", "last_funding_year",
-        "days_to_first_funding", "funding_duration"
+        "funding_total_usd",
+        "funding_rounds",
+        "founded_year",
+        "first_funding_year",
+        "last_funding_year",
+        "days_to_first_funding",
+        "funding_duration",
     ]
 
-    preprocessor = ColumnTransformer([
-        ("num", StandardScaler(), numeric_features),
-        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features)
-    ], remainder="passthrough")
+    preprocessor = ColumnTransformer(
+        [
+            ("num", StandardScaler(), numeric_features),
+            ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_features),
+        ],
+        remainder="passthrough",
+    )
 
     pipeline = Pipeline([("preprocessor", preprocessor)])
 
@@ -61,11 +69,7 @@ def main(features_path: Path = FEATURES_PATH):
 
     logger.info("Training Balanced Random Forest...")
     model = BalancedRandomForestClassifier(
-        n_estimators=500,
-        max_depth=10,
-        max_features="sqrt",
-        n_jobs=-1,
-        random_state=42
+        n_estimators=500, max_depth=10, max_features="sqrt", n_jobs=-1, random_state=42
     )
     model.fit(X_resampled, y_resampled)
 
@@ -74,8 +78,9 @@ def main(features_path: Path = FEATURES_PATH):
     precision, recall, thresholds = precision_recall_curve(y_test, y_proba)
 
     f1_scores = [
-        classification_report(y_test, (y_proba >= t).astype(int),
-                              output_dict=True, zero_division=0)['0']['f1-score']
+        classification_report(
+            y_test, (y_proba >= t).astype(int), output_dict=True, zero_division=0
+        )["0"]["f1-score"]
         for t in thresholds
     ]
     best_index = int(np.argmax(f1_scores))
@@ -85,7 +90,9 @@ def main(features_path: Path = FEATURES_PATH):
     y_pred = (y_proba >= optimal_threshold).astype(int)
     pr_auc = average_precision_score(y_test, y_proba)
     conf_matrix = confusion_matrix(y_test, y_pred)
-    report = classification_report(y_test, y_pred, target_names=["Failure", "Success"], zero_division=0)
+    report = classification_report(
+        y_test, y_pred, target_names=["Failure", "Success"], zero_division=0
+    )
 
     logger.success("=== Model Performance Summary ===")
     logger.info(f"Optimized Threshold: {optimal_threshold:.4f}")

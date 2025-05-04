@@ -3,8 +3,8 @@
 from pathlib import Path
 
 from loguru import logger
-import typer
 import pandas as pd
+import typer
 
 from startup_success.config import PROCESSED_DATA_DIR
 
@@ -12,6 +12,7 @@ app = typer.Typer()
 
 INPUT_FILE = PROCESSED_DATA_DIR / "dataset.csv"
 OUTPUT_FILE = PROCESSED_DATA_DIR / "features.csv"
+
 
 @app.command()
 def main(input_path: Path = INPUT_FILE, output_path: Path = OUTPUT_FILE):
