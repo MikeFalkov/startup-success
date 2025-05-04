@@ -1,0 +1,12 @@
+Best Threshold: 0.4230
+Precision-Recall AUC: 0.9783
+
+Classification Report:
+              precision    recall  f1-score   support
+
+     Failure       0.28      0.42      0.34      3226
+     Success       0.95      0.91      0.93     37569
+
+    accuracy                           0.87     40795
+   macro avg       0.61      0.67      0.63     40795
+weighted avg       0.90      0.87      0.88     40795

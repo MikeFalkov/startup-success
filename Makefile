@@ -70,6 +70,11 @@ predict:
 plots:
 	$(PYTHON_INTERPRETER) startup_success/plots.py
 
+## Generate report and evaluation metrics
+.PHONY: report
+report:
+	$(PYTHON_INTERPRETER) startup_success/report.py
+
 ## Run full pipeline from data to model training
 .PHONY: all
 all: data features train
