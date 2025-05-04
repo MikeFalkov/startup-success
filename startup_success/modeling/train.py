@@ -4,6 +4,7 @@ from pathlib import Path
 
 from imblearn.combine import SMOTETomek
 from imblearn.ensemble import BalancedRandomForestClassifier
+import joblib
 from loguru import logger
 import numpy as np
 import pandas as pd
@@ -19,11 +20,13 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 import typer
 
-from startup_success.config import PROCESSED_DATA_DIR
+from startup_success.config import MODELS_DIR, PROCESSED_DATA_DIR
 
 app = typer.Typer()
 
 FEATURES_PATH = PROCESSED_DATA_DIR / "features.csv"
+MODEL_PATH = MODELS_DIR / "balanced_random_forest.pkl"
+PIPELINE_PATH = MODELS_DIR / "preprocessor_pipeline.pkl"
 
 
 @app.command()
@@ -100,6 +103,15 @@ def main(features_path: Path = FEATURES_PATH):
     logger.info(f"Precision-Recall AUC: {pr_auc:.4f}")
     logger.info(f"\nConfusion Matrix:\n{conf_matrix}")
     logger.info(f"\nClassification Report:\n{report}")
+
+    logger.info(f"Saving model to: {MODEL_PATH}")
+    MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump(model, MODEL_PATH)
+    logger.success("Model saved.")
+
+    logger.info(f"Saving preprocessing pipeline to: {PIPELINE_PATH}")
+    joblib.dump(pipeline, PIPELINE_PATH)
+    logger.success("Preprocessing pipeline saved.")
 
 
 if __name__ == "__main__":
