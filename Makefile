@@ -15,13 +15,11 @@ PYTHON_INTERPRETER = python
 requirements:
 	uv sync
 
-
 ## Delete all compiled Python files
 .PHONY: clean
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
-
 
 ## Lint using ruff (use `make format` to do formatting)
 .PHONY: lint
@@ -29,13 +27,11 @@ lint:
 	ruff format --check
 	ruff check
 
-
 ## Format source code with ruff
 .PHONY: format
 format:
 	ruff check --fix
 	ruff format
-
 
 ## Set up Python interpreter environment
 .PHONY: create_environment
@@ -69,6 +65,15 @@ train:
 predict:
 	$(PYTHON_INTERPRETER) startup_success/modeling/predict.py
 
+## Generate plots
+.PHONY: plots
+plots:
+	$(PYTHON_INTERPRETER) startup_success/plots.py
+
+## Run full pipeline from data to model training
+.PHONY: all
+all: data features train
+
 ## Remove saved models
 .PHONY: clean-models
 clean-models:
@@ -79,10 +84,9 @@ clean-models:
 clean-data:
 	rm -rf data/processed/* data/interim/*
 
-## Generate plots
-.PHONY: plots
-plots:
-	$(PYTHON_INTERPRETER) startup_success/plots.py
+## Remove all compiled, processed, and model files
+.PHONY: clean-all
+clean-all: clean clean-data clean-models
 
 #################################################################################
 # Self Documenting Commands                                                     #

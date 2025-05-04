@@ -57,7 +57,7 @@ def main(input_path: Path = RAW_FILE, output_path: Path = PROCESSED_FILE):
     df["funding_duration"] = (df["last_funding_at"] - df["first_funding_at"]).dt.days
 
     # Filter outliers
-    df = df[df["funding_total_usd"] <= 5_000_000_000]
+    df = df[df["funding_total_usd"] <= 3_000_000_000]
     df = df[(df["founded_year"] >= 1990) & (df["founded_year"] <= 2015)]
     df.dropna(subset=["days_to_first_funding", "funding_duration"], inplace=True)
 
