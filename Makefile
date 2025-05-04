@@ -29,6 +29,7 @@ lint:
 	ruff format --check
 	ruff check
 
+
 ## Format source code with ruff
 .PHONY: format
 format:
@@ -44,15 +45,39 @@ create_environment:
 	@echo ">>> Windows: .\\\\.venv\\\\Scripts\\\\activate"
 	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
 
-
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
 
-## Make dataset
+## Make dataset (clean and cluster categories)
 .PHONY: data
 data: requirements
 	$(PYTHON_INTERPRETER) startup_success/dataset.py
+
+## Generate features
+.PHONY: features
+features:
+	$(PYTHON_INTERPRETER) startup_success/features.py
+
+## Train model
+.PHONY: train
+train:
+	$(PYTHON_INTERPRETER) startup_success/modeling/train.py
+
+## Predict using trained model
+.PHONY: predict
+predict:
+	$(PYTHON_INTERPRETER) startup_success/modeling/predict.py
+
+## Remove saved models
+.PHONY: clean-models
+clean-models:
+	rm -rf models/*
+
+## Remove processed/interim data
+.PHONY: clean-data
+clean-data:
+	rm -rf data/processed/* data/interim/*
 
 #################################################################################
 # Self Documenting Commands                                                     #
@@ -69,5 +94,6 @@ print('\n'.join(['{:25}{}'.format(*reversed(match)) for match in matches]))
 endef
 export PRINT_HELP_PYSCRIPT
 
+## Show help message
 help:
 	@$(PYTHON_INTERPRETER) -c "${PRINT_HELP_PYSCRIPT}" < $(MAKEFILE_LIST)

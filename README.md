@@ -4,7 +4,9 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-Our project is to predict whether a startup which is currently operating turn into a success or a failure.
+This project is to predict whether a startup which is currently operating turn into a success or a failure.
+
+---
 
 ## Project Organization
 
@@ -49,5 +51,106 @@ Our project is to predict whether a startup which is currently operating turn in
     └── plots.py                <- Code to create visualizations
 ```
 
---------
+---
+
+## Setup
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/your-org/startup_success.git
+cd startup_success
+```
+
+2. **Create a virtual environment**
+
+```bash
+make create_environment
+source .venv/bin/activate  # or .\.venv\Scripts\activate on Windows
+```
+
+3. **Install dependencies**
+
+```bash
+make requirements
+```
+
+---
+
+## Usage
+
+### Clean & Process Data
+
+```bash
+make data
+```
+
+### Generate Features
+
+```bash
+make features
+```
+
+### Train Model
+
+```bash
+make train
+```
+
+### Predict
+
+```bash
+make predict
+```
+
+---
+
+## Development
+
+### Code Quality
+
+Run lint and formatting checks with [ruff](https://docs.astral.sh/ruff/):
+
+```bash
+make lint    # Check formatting and lint
+make format  # Auto-format and fix issues
+```
+
+### Cleanup
+
+```bash
+make clean          # Remove .pyc and __pycache__
+make clean-data     # Remove interim and processed data
+make clean-models   # Remove saved models
+```
+
+---
+
+## Model
+
+The model is a `BalancedRandomForestClassifier` trained on SMOTE+Tomek-resampled data. Threshold optimization is applied using F1-score targeting the minority (failure) class.
+
+- Features include funding history, founding timeline, and clustered category vectors.
+- Predictions return both class labels and probabilities.
+
+---
+
+## Tools Used
+- [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) – Standardized project structure
+- [Typer](https://typer.tiangolo.com/) – CLI application framework
+- [loguru](https://github.com/Delgan/loguru) – Structured logging
+- [joblib](https://joblib.readthedocs.io/) – Model serialization
+- 
+- [scikit-learn](https://scikit-learn.org/) – ML models and preprocessing
+- [imbalanced-learn](https://imbalanced-learn.org/) – SMOTE+Tomek for class imbalance
+
+
+---
+
+## Authors
+
+- **Your Name** – *Initial work*
+- Open to contributors! Submit a PR or issue to get involved.
+
+```
 
