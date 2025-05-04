@@ -2,20 +2,20 @@
 
 from pathlib import Path
 
-import pandas as pd
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
-
 from loguru import logger
+import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.feature_extraction.text import TfidfVectorizer
 import typer
 
-from startup_success.config import RAW_DATA_DIR, PROCESSED_DATA_DIR
+from startup_success.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
 
 app = typer.Typer()
 
 RAW_FILE = RAW_DATA_DIR / "big_startup_secsees_dataset.csv"
 PROCESSED_FILE = PROCESSED_DATA_DIR / "dataset.csv"
+
 
 @app.command()
 def main(input_path: Path = RAW_FILE, output_path: Path = PROCESSED_FILE):
@@ -31,12 +31,15 @@ def main(input_path: Path = RAW_FILE, output_path: Path = PROCESSED_FILE):
     df.drop(columns=["permalink", "homepage_url", "name", "status", "state_code"], inplace=True)
 
     # Fill nulls
-    df.fillna({
-        "category_list": "Unknown",
-        "country_code": "Unknown",
-        "region": "Unknown",
-        "city": "Unknown"
-    }, inplace=True)
+    df.fillna(
+        {
+            "category_list": "Unknown",
+            "country_code": "Unknown",
+            "region": "Unknown",
+            "city": "Unknown",
+        },
+        inplace=True,
+    )
     df.dropna(subset=["first_funding_at"], inplace=True)
 
     # Funding cleaning
@@ -70,7 +73,10 @@ def main(input_path: Path = RAW_FILE, output_path: Path = PROCESSED_FILE):
     df["category_cluster"] = df["category_list"].map(cat_map)
 
     # Final drops
-    df.drop(columns=["category_list", "founded_at", "first_funding_at", "last_funding_at"], inplace=True)
+    df.drop(
+        columns=["category_list", "founded_at", "first_funding_at", "last_funding_at"],
+        inplace=True,
+    )
 
     logger.info(f"Saving cleaned dataset to: {output_path}")
     output_path.parent.mkdir(parents=True, exist_ok=True)
